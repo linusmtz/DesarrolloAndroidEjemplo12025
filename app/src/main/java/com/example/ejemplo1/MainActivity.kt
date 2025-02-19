@@ -1,23 +1,18 @@
 package com.example.ejemplo1
 
 import android.os.Bundle
-
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ejemplo1.ui.theme.Ejemplo1Theme
@@ -25,89 +20,87 @@ import com.example.ejemplo1.ui.theme.Ejemplo1Theme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             Ejemplo1Theme {
-
+                CalculatorScreen()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        fontSize = 100.sp,
-        lineHeight = 116.sp,
-        modifier = modifier
-    )
-}
+fun CalculatorScreen() {
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Ejemplo1Theme {
-        setContent()
-    }
-}
-@Composable
-fun SimpleButton(){
-    Button(
-        onClick = {
+    var number1 by remember { mutableStateOf("") }
+    var number2 by remember { mutableStateOf("") }
+    var result by remember { mutableStateOf<String?>(null) }
 
-        },
-        colors = ButtonDefaults.buttonColors(Color.DarkGray)
-    )
-    {
-        Text(text = "Button with gray background",color = Color.White)
-    }
-}
+    val numericRegex = Regex("^\\d*\$")
 
-@Composable
-fun setContent(){
-    SimpleButton()
-}
-
-
-@Composable
-fun Content3(){
-    Text(
-        text="Text con 75% height",
-        color = Color.White,
+    Column(
         modifier = Modifier
-            .padding(32.dp)
-            .background(Color.Cyan)
-            .size(width=250.dp,height=100.dp)
-    )
-}
-@Composable
-fun Content4(){
-    Text(
-        text="Text con 75% height",
-        color = Color.White,
-        modifier = Modifier
-            .background(Color.Green)
-            .fillMaxHeight(.75f)
-    )
-}
-@Composable
-fun Content5(){
-    Text(
-        text="Text con 75% height",
-        color = Color.White,
-        modifier = Modifier
-            .background(Color.Green)
-            .fillMaxHeight(.75f)
-    )
-}
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.gato), 
+            contentDescription = "Gato",
+            modifier = Modifier
+                .size(360.dp)
 
-@Composable
-fun ButtonWithIcon(){
-    Button(onClick = {
+        )
+        TextField(
+            value = number1,
+            onValueChange = { input ->
+                if (input.matches(numericRegex)) {
+                    number1 = input
+                }
+            },
+            label = { Text("Valor 1") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier.fillMaxWidth()
+        )
 
-    })
-    {
+        Spacer(modifier = Modifier.height(8.dp))
 
+
+        TextField(
+            value = number2,
+            onValueChange = { input ->
+                if (input.matches(numericRegex)) {
+                    number2 = input
+                }
+            },
+            label = { Text("Valor 2") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+
+        Button(
+            onClick = {
+                if (number1.isNotEmpty() && number2.isNotEmpty()) {
+                    val sum = number1.toInt() + number2.toInt()
+                    result = "Resultado: $sum"
+                } else {
+                    result = "Ingrese ambos valores"
+                }
+            },
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "Calcular", color = Color.White)
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+
+        result?.let {
+            Text(text = it, fontSize = 24.sp)
+        }
     }
 }
