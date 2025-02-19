@@ -22,76 +22,71 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Ejemplo1Theme {
-                CalculatorScreen()
+                Content()
             }
         }
     }
 }
 
 @Composable
-fun CalculatorScreen() {
-    var x by remember { mutableStateOf("") }
-    var y by remember { mutableStateOf("") }
-    var res by remember { mutableStateOf<String?>(null) }
+fun Content() {
+    var x by remember { mutableStateOf("")}
+    var y by remember {mutableStateOf("")}
+    var res by remember {mutableStateOf("") }
 
     Column(
-        modifier = Modifier
+        modifier =Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        verticalArrangement= Arrangement.Center,
+        horizontalAlignment =Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.gato), 
-            contentDescription = "Gato",
+            painter= painterResource(id = R.drawable.gato),
+            contentDescription="Gato",
             modifier = Modifier
                 .size(360.dp)
-
         )
         TextField(
-            value = x,
-            onValueChange = { input ->
-
-                    x = input
-
+            value =x,
+            onValueChange={input ->
+                    x =input
             },
-            label = { Text("Valor 1") },
+            label ={Text("Valor 1") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        TextField(
-            value = y,
-            onValueChange = { input ->
-
-                    y = input
-
-            },
-            label = { Text("Valor 2") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = Modifier.fillMaxWidth()
+            modifier= Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(16.dp))
+
+        TextField(
+            value =y,
+            onValueChange ={input ->
+                    y= input
+            },
+            label ={Text("Valor 2")},
+            keyboardOptions =KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(32.dp))
 
         Button(
-            onClick = {
-                if (x.isNotEmpty() && y.isNotEmpty()) {
-                    val sum = x.toInt() + y.toInt()
-                    res = "Resultado: $sum"
+            onClick={
+                if(x.isNotEmpty() && y.isNotEmpty()){
+                    val sum = x.toInt()+y.toInt()
+                    res = "Resultado es: $sum"
                 }
             },
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
-            modifier = Modifier.fillMaxWidth()
+            colors= ButtonDefaults.buttonColors(containerColor= Color.Blue),
+            modifier =Modifier.fillMaxWidth()
         ) {
-            Text(text = "Calcular", color = Color.White)
+            Text(text="Calcular",color = Color.White)
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier =Modifier.height(16.dp))
 
-        res?.let {
-            Text(text = it, fontSize = 24.sp)
+        res?.let{
+            Text(text= it, fontSize =24.sp)
         }
     }
 }
