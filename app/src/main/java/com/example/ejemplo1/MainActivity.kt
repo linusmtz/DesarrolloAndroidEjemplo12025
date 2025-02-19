@@ -30,12 +30,9 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun CalculatorScreen() {
-
-    var number1 by remember { mutableStateOf("") }
-    var number2 by remember { mutableStateOf("") }
-    var result by remember { mutableStateOf<String?>(null) }
-
-    val numericRegex = Regex("^\\d*\$")
+    var x by remember { mutableStateOf("") }
+    var y by remember { mutableStateOf("") }
+    var res by remember { mutableStateOf<String?>(null) }
 
     Column(
         modifier = Modifier
@@ -52,11 +49,11 @@ fun CalculatorScreen() {
 
         )
         TextField(
-            value = number1,
+            value = x,
             onValueChange = { input ->
-                if (input.matches(numericRegex)) {
-                    number1 = input
-                }
+
+                    x = input
+
             },
             label = { Text("Valor 1") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -65,13 +62,12 @@ fun CalculatorScreen() {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-
         TextField(
-            value = number2,
+            value = y,
             onValueChange = { input ->
-                if (input.matches(numericRegex)) {
-                    number2 = input
-                }
+
+                    y = input
+
             },
             label = { Text("Valor 2") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -80,14 +76,11 @@ fun CalculatorScreen() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-
         Button(
             onClick = {
-                if (number1.isNotEmpty() && number2.isNotEmpty()) {
-                    val sum = number1.toInt() + number2.toInt()
-                    result = "Resultado: $sum"
-                } else {
-                    result = "Ingrese ambos valores"
+                if (x.isNotEmpty() && y.isNotEmpty()) {
+                    val sum = x.toInt() + y.toInt()
+                    res = "Resultado: $sum"
                 }
             },
             colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
@@ -95,11 +88,9 @@ fun CalculatorScreen() {
         ) {
             Text(text = "Calcular", color = Color.White)
         }
-
         Spacer(modifier = Modifier.height(16.dp))
 
-
-        result?.let {
+        res?.let {
             Text(text = it, fontSize = 24.sp)
         }
     }
